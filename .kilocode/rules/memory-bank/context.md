@@ -1,8 +1,8 @@
-# Active Context: Next.js Starter Template
+# Active Context: Monad Farcaster MiniApp
 
 ## Current State
 
-**Template Status**: ✅ Full-stack user management app built and pushed
+**Template Status**: ✅ Full-stack Farcaster MiniApp with Monad integration
 
 ## Recently Completed
 
@@ -16,6 +16,13 @@
 - [x] User management API endpoints (GET, POST, PUT, DELETE)
 - [x] UI components (Button, Input)
 - [x] User management frontend page with CRUD operations
+- [x] Farcaster MiniApp SDK integration
+- [x] Wallet provider for Monad Testnet
+- [x] SafeAreaContainer for MiniApp display
+- [x] Farcaster manifest configuration
+- [x] Scaffold script
+- [x] GitHub Actions workflow
+- [x] Complete README documentation
 - [x] All changes pushed to remote repository
 
 ## Current Structure
@@ -23,24 +30,21 @@
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
 | `src/app/page.tsx` | User management UI | ✅ Complete |
-| `src/app/layout.tsx` | Root layout | ✅ Ready |
+| `src/app/layout.tsx` | Root layout with Providers | ✅ Complete |
 | `src/app/globals.css` | Global styles | ✅ Ready |
 | `src/app/api/users/route.ts` | Users API endpoint | ✅ Complete |
+| `src/app/.well-known/farcaster.json/route.ts` | Farcaster manifest | ✅ Complete |
 | `src/components/ui/Button.tsx` | Button component | ✅ Complete |
 | `src/components/ui/Input.tsx` | Input component | ✅ Complete |
+| `src/components/FarcasterProvider.tsx` | MiniApp SDK context | ✅ Complete |
+| `src/components/WalletProvider.tsx` | Wagmi wallet provider | ✅ Complete |
+| `src/components/SafeAreaContainer.tsx` | Safe area handling | ✅ Complete |
+| `src/components/App.tsx` | Main app wrapper | ✅ Complete |
 | `src/db/schema.ts` | Database schema | ✅ Complete |
 | `src/db/index.ts` | Database client | ✅ Complete |
-| `src/db/migrate.ts` | Migration script | ✅ Complete |
-| `drizzle.config.ts` | Drizzle config | ✅ Complete |
-| `.kilocode/` | AI context & recipes | ✅ Ready |
-
-## Current Focus
-
-Full-stack user management application is now complete with:
-- SQLite database with users table (id, name, email, createdAt)
-- REST API for user CRUD operations
-- Responsive frontend UI styled with Tailwind CSS
-- Components ready for reuse in other pages
+| `scaffold.sh` | Setup script | ✅ Complete |
+| `README.md` | Documentation | ✅ Complete |
+| `.github/workflows/build.yml` | CI/CD workflow | ✅ Complete |
 
 ## Session History
 
@@ -48,3 +52,4 @@ Full-stack user management application is now complete with:
 |------|---------|
 | Initial | Template created with base setup |
 | 2026-05-28 | Added database, API routes, UI components, and full user management app |
+| 2026-05-28 | Integrated Farcaster MiniApp SDK, Wallet provider, scaffold script, and workflow |
