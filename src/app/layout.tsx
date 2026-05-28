@@ -14,8 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Monad User Management MiniApp",
-  description: "A Farcaster MiniApp for user management with Monad integration",
+  title: "CreatorPay - Crypto Payments for Creators",
+  description: "Fast, low-fee onchain payments for creators. Pay TikTok coins, Facebook ads, Twitter ads, and more.",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  themeColor: "#171717",
 };
 
 export default function RootLayout({

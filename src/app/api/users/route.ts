@@ -9,14 +9,16 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const { name, email } = await request.json();
-  
-  if (!name || !email) {
-    return NextResponse.json({ error: "Name and email required" }, { status: 400 });
-  }
+  const { fid, walletAddress, username, displayName, email } = await request.json();
   
   try {
-    const result = await db.insert(users).values({ name, email }).returning();
+    const result = await db.insert(users).values({
+      fid,
+      walletAddress,
+      username,
+      displayName,
+      email
+    }).returning();
     return NextResponse.json(result[0], { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
@@ -24,14 +26,20 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  const { id, name, email } = await request.json();
+  const { id, fid, walletAddress, username, displayName, email } = await request.json();
   
   if (!id) {
     return NextResponse.json({ error: "User ID required" }, { status: 400 });
   }
   
   try {
-    const result = await db.update(users).set({ name, email }).where(eq(users.id, id)).returning();
+    const result = await db.update(users).set({
+      fid,
+      walletAddress,
+      username,
+      displayName,
+      email
+    }).where(eq(users.id, id)).returning();
     return NextResponse.json(result[0] || {});
   } catch (error) {
     return NextResponse.json({ error: "Failed to update user" }, { status: 500 });

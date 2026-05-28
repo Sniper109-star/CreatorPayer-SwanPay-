@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "@chromedevtools/chrome-devtools-mcp@1.1.0"],
+      "type": "stdio",
+      "env": {
+        "NODE_OPTIONS": "--experimental-global-webcrypto"
+      }
+    }
+  }
+}

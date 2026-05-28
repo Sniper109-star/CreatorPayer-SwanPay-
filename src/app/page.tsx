@@ -1,147 +1,52 @@
-"use client";
+import { MobileNav } from "@/components/MobileNav";
+import Link from "next/link";
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  createdAt: string;
-};
-
-export default function Home() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const res = await fetch("/api/users");
-      const data = await res.json();
-      setUsers(data);
-    };
-    fetchUsers();
-  }, []);
-
-  const refreshUsers = async () => {
-    const res = await fetch("/api/users");
-    const data = await res.json();
-    setUsers(data);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    if (editingId) {
-      await fetch("/api/users", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: editingId, name, email })
-      });
-    } else {
-      await fetch("/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email })
-      });
-    }
-    
-    setName("");
-    setEmail("");
-    setEditingId(null);
-    refreshUsers();
-    setLoading(false);
-  };
-
-  const handleEdit = (user: User) => {
-    setName(user.name);
-    setEmail(user.email);
-    setEditingId(user.id);
-  };
-
-  const handleDelete = async (id: number) => {
-    await fetch("/api/users", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id })
-    });
-    refreshUsers();
-  };
+export default function DashboardPage() {
+  const quickActions = [
+    { title: "Payment Link", desc: "Create & share", href: "/payments/links", color: "bg-blue-600" },
+    { title: "Send Tip", desc: "Support creators", href: "/tips", color: "bg-purple-600" },
+    { title: "Subscribe", desc: "Creator tiers", href: "/subscriptions", color: "bg-green-600" },
+    { title: "Run Ads", desc: "Campaign setup", href: "/ads", color: "bg-orange-600" },
+  ];
 
   return (
-    <div className="w-full max-w-2xl space-y-6">
-      <form onSubmit={handleSubmit} className="bg-neutral-800 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">
-          {editingId ? "Edit User" : "Add New User"}
-        </h2>
-        <div className="grid gap-4 mb-4">
-          <Input
-            label="Name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Enter name"
-          />
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Enter email"
-          />
-        </div>
-        <Button type="submit" disabled={loading}>
-          {loading ? "Saving..." : editingId ? "Update User" : "Add User"}
-        </Button>
-        {editingId && (
-          <Button 
-            type="button" 
-            variant="secondary" 
-            onClick={() => {
-              setEditingId(null);
-              setName("");
-              setEmail("");
-            }}
-            className="ml-2"
-          >
-            Cancel
-          </Button>
-        )}
-      </form>
+    <div className="min-h-screen bg-neutral-900 pb-20">
+      <header className="bg-neutral-800 p-4 border-b border-neutral-700">
+        <h1 className="text-2xl font-bold text-white">CreatorPay</h1>
+        <p className="text-neutral-400 text-sm">Crypto native payments infrastructure</p>
+      </header>
 
-      <div className="bg-neutral-800 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Users</h2>
-        {users.length === 0 ? (
-          <p className="text-neutral-400">No users yet. Add one above!</p>
-        ) : (
-          <ul className="space-y-3">
-            {users.map((user) => (
-              <li key={user.id} className="flex items-center justify-between p-3 bg-neutral-700 rounded">
-                <div>
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-sm text-neutral-400">{user.email}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="secondary" onClick={() => handleEdit(user)}>
-                    Edit
-                  </Button>
-                  <Button variant="danger" onClick={() => handleDelete(user.id)}>
-                    Delete
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <main className="p-4 space-y-6">
+        <section className="grid grid-cols-2 gap-3">
+          {quickActions.map((action) => (
+            <Link
+              key={action.href}
+              href={action.href}
+              className={`${action.color} rounded-xl p-4 text-white text-center transition-opacity active:opacity-80`}
+            >
+              <div className="font-semibold">{action.title}</div>
+              <div className="text-xs opacity-80">{action.desc}</div>
+            </Link>
+          ))}
+        </section>
+
+        <section className="bg-neutral-800 rounded-xl p-4">
+          <h2 className="text-lg font-semibold text-white mb-3">Wallet Balance</h2>
+          <div className="text-3xl font-bold text-green-400">$0.00</div>
+          <p className="text-neutral-400 text-sm">Ready for payouts</p>
+        </section>
+
+        <section className="bg-neutral-800 rounded-xl p-4">
+          <h2 className="text-lg font-semibold text-white mb-3">Recent Activity</h2>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center py-2 border-b border-neutral-700">
+              <span className="text-neutral-300">No recent transactions</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <MobileNav />
     </div>
   );
 }

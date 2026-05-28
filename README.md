@@ -1,25 +1,29 @@
-# Monad User Management MiniApp
+# CreatorPay - Crypto Native Payments for Creators
 
-A full-stack Farcaster MiniApp with user management capabilities, built on Next.js 16, TypeScript, Tailwind CSS 4, and integrated with Monad blockchain.
+Fast, low-fee onchain infrastructure for creator payments, gifts, subscriptions, and ads on Monad and Solana.
 
 ## Features
 
-- ✅ Full-stack user management (CRUD operations)
-- ✅ Farcaster MiniApp SDK integration
-- ✅ Wallet connection support via Wagmi/Viem
-- ✅ SQLite database with Drizzle ORM
-- ✅ Responsive UI with Tailwind CSS
-- ✅ TypeScript strict mode
-- ✅ Ready for deployment on Vercel
+- ✅ **Payment Links** - Create shareable crypto payment links
+- ✅ **Crypto Checkout** - Accept payments in multiple cryptocurrencies
+- ✅ **Creator Gifting/Tipping** - Fan-to-creator support payments
+- ✅ **Ad Campaign Funding** - Pay for TikTok coins, Facebook/Twitter ads with crypto
+- ✅ **Subscriptions** - Recurring creator monetization
+- ✅ **Wallet Balance** - Track and manage funds
+- ✅ **Payment Analysis** - Transaction history and analytics
+- ✅ **Real-time Notifications** - Instant payment alerts
+- ✅ **Farcaster MiniApp SDK** - Native social integration
+- ✅ **Mobile-First UI/UX** - Optimized for mobile experience
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 + App Router
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS 4
+- **Styling**: Tailwind CSS 4 (mobile-first)
 - **Database**: SQLite with Drizzle ORM
-- **Blockchain**: Monad Testnet (Wagmi + Viem)
+- **Blockchain**: Monad Testnet + Solana
 - **Farcaster SDK**: @farcaster/miniapp-sdk
+- **API Testing**: Playwright + Chrome DevTools MCP
 - **Package Manager**: Bun
 
 ## Getting Started
@@ -33,17 +37,10 @@ A full-stack Farcaster MiniApp with user management capabilities, built on Next.
 
 ```bash
 bun install
-```
-
-### Environment Variables
-
-Copy `.env.example` to `.env.local`:
-
-```bash
 cp .env.example .env.local
 ```
 
-Edit `.env.local` with your values:
+### Environment Variables
 
 ```env
 NEXT_PUBLIC_URL=http://localhost:3000
@@ -54,19 +51,14 @@ NEXT_PUBLIC_URL=http://localhost:3000
 
 ```bash
 bun dev
+bun test:e2e  # Run mobile UI tests
 ```
-
-Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ### Database
 
-Generate migrations:
-
 ```bash
-bun db:generate
+bun db:generate  # Generate migrations
 ```
-
-Migrations run automatically in the sandbox after push.
 
 ## Project Structure
 
@@ -74,112 +66,63 @@ Migrations run automatically in the sandbox after push.
 src/
 ├── app/
 │   ├── layout.tsx           # Root layout with Providers
-│   ├── page.tsx             # User management page
-│   └── api/
-│       └── users/
-│           └── route.ts     # CRUD API endpoints
+│   ├── page.tsx             # Dashboard
+│   ├── globals.css          # Global styles
+│   ├── payments/            # Payments section
+│   ├── wallet/              # Wallet section
+│   ├── profile/             # Profile section
+│   ├── tips/                # Tipping interface
+│   ├── subscriptions/       # Subscription management
+│   ├── ads/                 # Ad campaigns
+│   └── api/                 # REST API endpoints
 ├── components/
-│   ├── ui/
-│   │   ├── Button.tsx       # Reusable button component
-│   │   └── Input.tsx        # Reusable input component
-│   ├── FarcasterProvider.tsx # MiniApp SDK context
-│   ├── WalletProvider.tsx   # Wagmi wallet provider
-│   ├── SafeAreaContainer.tsx # Safe area handling
-│   └── App.tsx              # Main app wrapper
-├── db/
-│   ├── schema.ts            # Database schema
-│   ├── index.ts             # Database client
-│   ├── migrate.ts           # Migration script
-│   └── migrations/          # Generated migrations
-└── lib/
-    └── constants.ts         # App constants
+│   ├── ui/                  # Reusable UI components
+│   ├── FarcasterProvider.tsx
+│   ├── WalletProvider.tsx
+│   ├── SafeAreaContainer.tsx
+│   ├── MobileNav.tsx
+│   └── App.tsx
+├── db/                      # Database schema and client
+└── lib/                     # Utilities
 ```
 
 ## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | /api/users | Get all users |
-| POST | /api/users | Create new user |
-| PUT | /api/users | Update user |
-| DELETE | /api/users | Delete user |
+| GET/POST | /api/users | User management |
+| GET/POST | /api/payment-links | Payment link CRUD |
+| GET/POST | /api/transactions | Transaction history |
+| GET/POST | /api/tips | Tip management |
+| GET/POST | /api/subscriptions | Subscription CRUD |
+| GET | /api/test | Health check |
 
-## Farcaster MiniApp Integration
+## Mobile Testing with Chrome DevTools MCP
 
-### Frame Configuration
+The project integrates Chrome DevTools MCP v1.1.0 for automated mobile testing:
 
-The app includes Farcaster Frame support. Configure in `src/app/.well-known/farcaster.json/route.ts`:
-
-```typescript
-const farcasterConfig = {
-  accountAssociation: {
-    header: "",
-    payload: "",
-    signature: ""
-  },
-  frame: {
-    version: "1",
-    name: "Monad User Management MiniApp",
-    iconUrl: `${appUrl}/favicon.ico`,
-    homeUrl: appUrl,
-    imageUrl: `${appUrl}/opengraph.png`,
-    tags: ["monad", "farcaster", "miniapp"],
-    primaryCategory: "developer-tools",
-    buttonTitle: "Launch App",
-    splashImageUrl: `${appUrl}/splash.png`,
-    splashBackgroundColor: "#171717",
+```json
+// .mcp.json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "@chromedevtools/chrome-devtools-mcp@1.1.0"]
+    }
   }
-};
-```
-
-### Using the MiniApp Context
-
-```tsx
-import { useMiniAppContext } from '@/components/FarcasterProvider';
-
-function MyComponent() {
-  const { context, actions, isLoading } = useMiniAppContext();
-  
-  // Access user info
-  const user = context?.user;
-  
-  // Call Farcaster actions
-  const addFrame = () => actions?.addFrame();
-  
-  return <div>{user?.displayName}</div>;
 }
 ```
 
-## Wallet Integration
-
-The app includes wallet support for Monad Testnet:
-
-```tsx
-import { useConnect, useAccount } from 'wagmi';
-import { monadTestnet } from 'viem/chains';
-
-function WalletButton() {
-  const { connect } = useConnect();
-  const { address } = useAccount();
-  
-  return <button onClick={() => connect({ chainId: monadTestnet.id })}>Connect</button>;
-}
+Run tests:
+```bash
+bun test:e2e
 ```
 
 ## Build and Deploy
 
 ```bash
-# Type check
-bun typecheck
-
-# Lint
-bun lint
-
-# Build for production
-bun build
+bun typecheck && bun lint && bun build
 ```
-
-Deploy to Vercel or any platform supporting Next.js.
 
 ## Scripts
 
@@ -187,11 +130,11 @@ Deploy to Vercel or any platform supporting Next.js.
 {
   "dev": "next dev",
   "build": "next build",
-  "start": "next start",
   "lint": "eslint",
   "typecheck": "tsc --noEmit",
   "db:generate": "drizzle-kit generate",
-  "db:migrate": "bun run src/db/migrate.ts"
+  "test:e2e": "playwright test",
+  "test:e2e:ui": "playwright test --ui"
 }
 ```
 
