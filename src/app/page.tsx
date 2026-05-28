@@ -39,16 +39,19 @@ export default function DashboardPage() {
           <p className="text-[#fcd34d] text-sm">Ready for payouts • Monad Testnet</p>
         </section>
 
-        <section className="bg-[#291e0f] rounded-xl p-4 border border-[#422d13]">
-          <h2 className="text-lg font-semibold text-[#fef3c7] mb-3 flex items-center">
-            <span className="text-[#f59e0b] mr-2">⚡</span>
-            Recent Activity
+        <section className="bg-gradient-to-br from-[#f59e0b]/20 to-[#291e0f] rounded-xl p-5 border border-[#f59e0b]/30">
+          <h2 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#f59e0b] to-[#fbbf24] mb-2 flex items-center">
+            <span className="mr-2">🏆</span>
+            Verified Payouts, Now With Digital Badges
           </h2>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center py-2 border-b border-[#422d13]">
-              <span className="text-[#fcd34d] font-medium">No recent transactions</span>
-              <span className="text-xs text-[#fcd34d]/60">—</span>
-            </div>
+          <p className="text-[#fcd34d] text-xs mb-3">Every payout = unique NFT badge on-chain</p>
+          <div className="flex space-x-2">
+            <Link href="/nft/badges" className="flex-1 bg-[#f59e0b] text-[#1a1107] py-2 rounded-lg text-sm font-bold text-center">
+              View Badges
+            </Link>
+            <Link href="/nft/mint" className="flex-1 bg-[#3f2e12] text-white py-2 rounded-lg text-sm font-bold text-center">
+              Mint Now
+            </Link>
           </div>
         </section>
 

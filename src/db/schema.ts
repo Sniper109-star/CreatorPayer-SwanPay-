@@ -33,6 +33,21 @@ export const transactions = sqliteTable("transactions", {
   status: text("status").default("pending"),
   type: text("type"),
   metadata: text("metadata"),
+  nftTokenId: text("nft_token_id"),
+  nftMinted: integer("nft_minted", { mode: "boolean" }).default(false),
+  createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
+});
+
+export const nftPayoutBadges = sqliteTable("nft_payout_badges", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  transactionId: integer("transaction_id").references(() => transactions.id),
+  creatorId: integer("creator_id").references(() => users.id),
+  tokenId: text("token_id"),
+  contractAddress: text("contract_address"),
+  chain: text("chain").default("monad"),
+  metadata: text("metadata"),
+  imageUrl: text("image_url"),
+  mintedAt: integer("minted_at", { mode: "timestamp" }),
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
 });
 
