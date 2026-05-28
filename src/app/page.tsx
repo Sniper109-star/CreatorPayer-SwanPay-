@@ -74,78 +74,74 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-neutral-900 text-white p-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">User Management</h1>
-        
-        <form onSubmit={handleSubmit} className="bg-neutral-800 p-6 rounded-lg mb-8">
-          <h2 className="text-xl font-semibold mb-4">
-            {editingId ? "Edit User" : "Add New User"}
-          </h2>
-          <div className="grid gap-4 mb-4">
-            <Input
-              label="Name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Enter name"
-            />
-            <Input
-              label="Email"
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter email"
-            />
-          </div>
-          <Button type="submit" disabled={loading}>
-            {loading ? "Saving..." : editingId ? "Update User" : "Add User"}
-          </Button>
-          {editingId && (
-            <Button 
-              type="button" 
-              variant="secondary" 
-              onClick={() => {
-                setEditingId(null);
-                setName("");
-                setEmail("");
-              }}
-              className="ml-2"
-            >
-              Cancel
-            </Button>
-          )}
-        </form>
-
-        <div className="bg-neutral-800 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Users</h2>
-          {users.length === 0 ? (
-            <p className="text-neutral-400">No users yet. Add one above!</p>
-          ) : (
-            <ul className="space-y-3">
-              {users.map((user) => (
-                <li key={user.id} className="flex items-center justify-between p-3 bg-neutral-700 rounded">
-                  <div>
-                    <p className="font-medium">{user.name}</p>
-                    <p className="text-sm text-neutral-400">{user.email}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="secondary" onClick={() => handleEdit(user)}>
-                      Edit
-                    </Button>
-                    <Button variant="danger" onClick={() => handleDelete(user.id)}>
-                      Delete
-                    </Button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+    <div className="w-full max-w-2xl space-y-6">
+      <form onSubmit={handleSubmit} className="bg-neutral-800 p-6 rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">
+          {editingId ? "Edit User" : "Add New User"}
+        </h2>
+        <div className="grid gap-4 mb-4">
+          <Input
+            label="Name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            placeholder="Enter name"
+          />
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="Enter email"
+          />
         </div>
+        <Button type="submit" disabled={loading}>
+          {loading ? "Saving..." : editingId ? "Update User" : "Add User"}
+        </Button>
+        {editingId && (
+          <Button 
+            type="button" 
+            variant="secondary" 
+            onClick={() => {
+              setEditingId(null);
+              setName("");
+              setEmail("");
+            }}
+            className="ml-2"
+          >
+            Cancel
+          </Button>
+        )}
+      </form>
+
+      <div className="bg-neutral-800 p-6 rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Users</h2>
+        {users.length === 0 ? (
+          <p className="text-neutral-400">No users yet. Add one above!</p>
+        ) : (
+          <ul className="space-y-3">
+            {users.map((user) => (
+              <li key={user.id} className="flex items-center justify-between p-3 bg-neutral-700 rounded">
+                <div>
+                  <p className="font-medium">{user.name}</p>
+                  <p className="text-sm text-neutral-400">{user.email}</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="secondary" onClick={() => handleEdit(user)}>
+                    Edit
+                  </Button>
+                  <Button variant="danger" onClick={() => handleDelete(user.id)}>
+                    Delete
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-    </main>
+    </div>
   );
 }
