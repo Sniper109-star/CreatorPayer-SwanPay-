@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-template",
+  "name": "creatorpay",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,6 +20,7 @@
     "viem": "^2.22.22",
     "wagmi": "^2.14.12",
     "zod": "^3.24.1",
+    "@privy-io/react-auth": "^1.70.0",
     "@kilocode/app-builder-db": "github:Kilo-Org/app-builder-db#main",
     "drizzle-orm": "^0.45.2",
     "next": "^16.1.3",
