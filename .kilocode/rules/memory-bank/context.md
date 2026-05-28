@@ -40,6 +40,11 @@
 | `src/components/MobileNav.tsx` | Bottom navigation | ✅ Complete |
 | `.mcp.json` | Chrome DevTools MCP config | ✅ Complete |
 | `.github/workflows/build.yml` | CI/CD workflow | ✅ Complete |
+| `src/lib/nowpayments.ts` | NOWPayments API client | ✅ Complete |
+| `src/lib/cloudinary.ts` | Cloudinary upload client | ✅ Complete |
+| `src/lib/redis.ts` | Redis caching stubs | ✅Complete |
+| `src/lib/monad-rpc.ts` | Monad RPC stubs | ✅ Complete |
+| `src/app/api/webhooks/nowpayments/route.ts` | Payment webhook | ✅ Complete |
 
 ## Session History
 
