@@ -1,28 +1,25 @@
-import { Redis } from '@upstash/redis';
+// Redis client stubs (requires @upstash/redis)
+export const redis = {
+  setex: async (_key: string, _ttl: number, _value: string) => true,
+  get: async (_key: string) => null,
+  incr: async (_key: string) => 1,
+  expire: async (_key: string, _ttl: number) => true,
+};
 
-// Redis client for caching and rate limiting
-export const redis = new Redis({
-  url: process.env.REDIS_URL || '',
-  token: process.env.REDIS_TOKEN || '',
-});
-
-// Cache user data
-export async function cacheUser(fid: number, data: any) {
+export async function cacheUser(fid: number, data: any): Promise<boolean> {
   return redis.setex(`user:${fid}`, 3600, JSON.stringify(data));
 }
 
-export async function getCachedUser(fid: number) {
+export async function getCachedUser(fid: number): Promise<any | null> {
   const data = await redis.get(`user:${fid}`);
   return data ? JSON.parse(data as string) : null;
 }
 
-// Cache payment links
-export async function cachePaymentLink(slug: string, data: any) {
+export async function cachePaymentLink(slug: string, data: any): Promise<boolean> {
   return redis.setex(`link:${slug}`, 1800, JSON.stringify(data));
 }
 
-// Rate limiting for API calls
-export async function rateLimit(identifier: string, limit = 10, window = 60) {
+export async function rateLimit(identifier: string, limit = 10, window = 60): Promise<boolean> {
   const key = `rate:${identifier}`;
   const current = (await redis.incr(key)) as number;
   
