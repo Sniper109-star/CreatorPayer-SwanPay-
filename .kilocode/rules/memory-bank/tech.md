@@ -59,7 +59,9 @@ bun typecheck      # Run TypeScript type checking
 {
   "next": "^16.1.3", // Framework
   "react": "^19.2.3", // UI library
-  "react-dom": "^19.2.3" // React DOM
+  "react-dom": "^19.2.3", // React DOM
+  "@kilocode/app-builder-db": "github:Kilo-Org/app-builder-db#main", // Database client
+  "drizzle-orm": "^0.45.2" // ORM
 }
 ```
 
@@ -74,7 +76,8 @@ bun typecheck      # Run TypeScript type checking
   "@tailwindcss/postcss": "^4.1.17",
   "tailwindcss": "^4.1.17",
   "eslint": "^9.39.1",
-  "eslint-config-next": "^16.0.0"
+  "eslint-config-next": "^16.0.0",
+  "drizzle-kit": "^0.31.10" // Database migrations
 }
 ```
 
@@ -85,6 +88,7 @@ bun typecheck      # Run TypeScript type checking
 ├── .gitignore              # Git ignore rules
 ├── package.json            # Dependencies and scripts
 ├── bun.lock                # Bun lockfile
+├── drizzle.config.ts       # Drizzle ORM configuration
 ├── next.config.ts          # Next.js configuration
 ├── tsconfig.json           # TypeScript configuration
 ├── postcss.config.mjs      # PostCSS (Tailwind) config
@@ -92,11 +96,23 @@ bun typecheck      # Run TypeScript type checking
 ├── public/                 # Static assets
 │   └── .gitkeep
 └── src/                    # Source code
-    └── app/                # Next.js App Router
-        ├── layout.tsx      # Root layout
-        ├── page.tsx        # Home page
-        ├── globals.css     # Global styles
-        └── favicon.ico     # Site icon
+    ├── app/                # Next.js App Router
+    │   ├── layout.tsx      # Root layout
+    │   ├── page.tsx        # User management page
+    │   ├── globals.css     # Global styles
+    │   ├── favicon.ico     # Site icon
+    │   └── api/            # API routes
+    │       └── users/      # Users endpoint
+    │           └── route.ts
+    └── components/         # Reusable components
+        └── ui/
+            ├── Button.tsx
+            └── Input.tsx
+    └── db/                 # Database
+        ├── schema.ts       # Table definitions
+        ├── index.ts        # Database client
+        ├── migrate.ts      # Migration script
+        └── migrations/     # Generated migrations
 ```
 
 ## Technical Constraints
@@ -104,7 +120,7 @@ bun typecheck      # Run TypeScript type checking
 ### Starting Point
 
 - Minimal structure - expand as needed
-- No database by default (use recipe to add)
+- Database configured (Drizzle + SQLite)
 - No authentication by default (add when needed)
 
 ### Browser Support
@@ -138,6 +154,6 @@ bun typecheck      # Run TypeScript type checking
 
 ### Environment Variables
 
-- None required for base template
-- Add as needed for features
-- Use `.env.local` for local development
+- `DB_URL` - Database connection string (provided by sandbox)
+- `DB_TOKEN` - Database authentication token (provided by sandbox)
+- Add additional variables as needed for features

@@ -31,11 +31,12 @@ Starting a new Next.js project involves boilerplate setup, configuration decisio
 
 ## What This Template Provides
 
-1. **Clean App Structure**: Single page ready for expansion
+1. **Clean App Structure**: User management page with CRUD operations
 2. **Type Safety**: Full TypeScript setup with strict mode
 3. **Modern Styling**: Tailwind CSS 4 ready to use
 4. **Code Quality**: ESLint configured
 5. **Extensibility**: Recipe system for common features
+6. **Database**: SQLite with Drizzle ORM (users table)
 
 ## Integration Points
 

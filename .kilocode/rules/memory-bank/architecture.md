@@ -6,13 +6,21 @@
 src/
 ├── app/                    # Next.js App Router
 │   ├── layout.tsx          # Root layout + metadata
-│   ├── page.tsx            # Home page
+│   ├── page.tsx            # User management page
 │   ├── globals.css         # Tailwind imports + global styles
-│   └── favicon.ico         # Site icon
-└── (expand as needed)
-    ├── components/         # React components (add when needed)
-    ├── lib/                # Utilities and helpers (add when needed)
-    └── db/                 # Database files (add via recipe)
+│   ├── favicon.ico         # Site icon
+│   └── api/                # API Routes
+│       └── users/
+│           └── route.ts    # CRUD endpoints
+├── components/             # React components
+│   └── ui/
+│       ├── Button.tsx      # Reusable button
+│       └── Input.tsx       # Reusable input
+└── db/                     # Database files
+    ├── schema.ts           # Table definitions
+    ├── index.ts            # Database client
+    ├── migrate.ts          # Migration script
+    └── migrations/         # Generated migrations
 ```
 
 ## Key Design Patterns
