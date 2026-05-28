@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { paymentLinks } from "@/db/schema";
+import { paymentLinks, transactions } from "@/db/schema";
 import { NextRequest, NextResponse } from "next/server";
+import { nowPayments } from "@/lib/nowpayments";
 
 export async function GET() {
   const allLinks = await db.select().from(paymentLinks);
@@ -9,7 +10,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const { userId, title, amount, currency, slug } = await request.json();
+  const { userId, title, amount, currency, slug, creatorId } = await request.json();
   
   if (!title || !amount) {
     return NextResponse.json({ error: "Title and amount required" }, { status: 400 });
@@ -17,13 +18,21 @@ export async function POST(request: NextRequest) {
   
   try {
     const result = await db.insert(paymentLinks).values({
-      userId,
+      userId: creatorId || userId,
       title,
       amount,
       currency: currency || "USD",
       slug: slug || `link-${Date.now()}`
     }).returning();
-    return NextResponse.json(result[0], { status: 201 });
+    
+    const invoice = await nowPayments.createInvoice(
+      amount,
+      "USD",
+      result[0].id.toString(),
+      title
+    );
+    
+    return NextResponse.json({ ...result[0], invoice }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to create link" }, { status: 500 });
   }
