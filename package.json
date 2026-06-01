@@ -9,11 +9,16 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun run src/db/migrate.ts"
+    "db:migrate": "bun run src/db/migrate.ts",
+    "mpp:server": "bun run src/server/mpp-server.ts",
+    "solana:mint": "bun run src/server/mint-solana-nft.ts",
+    "solana:charge": "bun run src/server/create-solana-charge.ts",
+    "x402:serve": "bun run src/server/x402-resource-server.ts"
   },
   "dependencies": {
     "@farcaster/miniapp-core": "^0.3.6",
     "@farcaster/miniapp-sdk": "^0.1.7",
+    "@supabase/supabase-js": "^2.39.0",
     "@tanstack/react-query": "^5.64.2",
     "@upstash/redis": "^1.35.1",
     "@vercel/og": "^0.7.2",
@@ -43,6 +48,19 @@
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.0",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "hardhat": "^2.22.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@typechain/hardhat": "^9.0.0",
+    "chai": "^4.5.0",
+    "ethers": "^6.13.0",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.5",
+    "ts-node": "^10.9.0",
+    "typechain": "^8.3.0"
   }
 }
