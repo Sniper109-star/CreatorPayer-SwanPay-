@@ -14,20 +14,23 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-neutral-800 border-t border-neutral-700 safe-area-bottom">
-      <div className="flex justify-around items-center h-16">
-        {tabs.map((tab) => (
-          <Link
-            key={tab.path}
-            href={tab.path}
-            className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${
-              pathname === tab.path ? "text-blue-400" : "text-neutral-400"
-            }`}
-          >
-            <span className="text-xl mb-1">{tab.icon}</span>
-            <span className="text-xs">{tab.name}</span>
-          </Link>
-        ))}
+    <nav className="fixed bottom-0 left-0 right-0 glass-panel safe-area-bottom z-30">
+      <div className="flex justify-around items-center h-14">
+        {tabs.map((tab, index) => {
+          const isActive = pathname === tab.path;
+          return (
+            <Link
+              key={tab.path}
+              href={tab.path}
+              className={`flex flex-col items-center justify-center flex-1 h-full transition-all duration-300 stagger-${index + 1} ${
+                isActive ? "nav-item-active scale-105" : "text-[#fcd34d]/80"
+              }`}
+            >
+              <span className="text-xl mb-0.5 leading-none">{tab.icon}</span>
+              <span className="text-[10px] font-semibold tracking-wide">{tab.name}</span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

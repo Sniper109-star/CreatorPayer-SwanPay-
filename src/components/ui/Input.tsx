@@ -27,7 +27,7 @@ export function Input({
         onChange={onChange}
         required={required}
         placeholder={placeholder}
-        className="px-3 py-2 bg-neutral-800 border border-neutral-700 rounded text-white focus:outline-none focus:border-blue-500"
+        className="px-4 py-2 rounded-2xl border border-[#3b2b14] bg-[#23180d] py-2 bg-neutral-800 border border-neutral-700 rounded text-white focus:outline-none focus:border-blue-500"
       />
     </div>
   );
