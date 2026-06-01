@@ -1,29 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createPaymentIntent, retrievePaymentIntent } from "@/lib/stripe";
+import { nowPayments } from "@/lib/nowpayments";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { amount, currency = "usd", bookingId } = body;
+    const { amount, currency = "USD", bookingId } = body;
 
     if (!amount) {
       return NextResponse.json({ error: "Amount is required" }, { status: 400 });
     }
 
-    const metadata: Record<string, string> = {
-      source: "creatorpay",
-      ...(bookingId ? { bookingId: String(bookingId) } : {}),
+    const invoice = await nowPayments.createInvoice(
+      Number(amount),
+      currency,
+      bookingId ? `booking-${bookingId}` : `card-payment-${Date.now()}`,
+      "CreatorPay card payment"
+    );
+
+    const payment = {
+      id: invoice?.payment_id || `card-${Date.now()}`,
+      amount,
+      currency,
+      status: "pending",
+      invoiceUrl: invoice?.invoice_url,
     };
 
-    const paymentIntent = await createPaymentIntent(Math.round(Number(amount) * 100), currency, metadata);
-
-    return NextResponse.json({
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
-    }, { status: 201 });
+    return NextResponse.json(payment, { status: 201 });
   } catch (error) {
-    console.error("Stripe payment intent error:", error);
-    const message = error instanceof Error ? error.message : "Failed to create payment intent";
+    console.error("Card payment error:", error);
+    const message = error instanceof Error ? error.message : "Failed to create payment";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
@@ -31,21 +36,22 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const paymentIntentId = searchParams.get("paymentIntentId");
+    const paymentId = searchParams.get("paymentId");
 
-    if (!paymentIntentId) {
-      return NextResponse.json({ status: "error", message: "paymentIntentId is required" }, { status: 400 });
+    if (!paymentId) {
+      return NextResponse.json({ error: "Payment ID is required" }, { status: 400 });
     }
 
-    const paymentIntent = await retrievePaymentIntent(paymentIntentId);
+    const status = await nowPayments.getPaymentStatus(paymentId);
+
     return NextResponse.json({
-      id: paymentIntent.id,
-      status: paymentIntent.status,
-      amount: paymentIntent.amount,
-      currency: paymentIntent.currency,
+      id: paymentId,
+      status: status?.payment_status || "unknown",
+      amount: status?.price_amount,
+      currency: status?.pay_currency,
     });
   } catch (error) {
-    console.error("Stripe retrieve error:", error);
-    return NextResponse.json({ error: "Payment intent not found" }, { status: 404 });
+    console.error("Card payment status error:", error);
+    return NextResponse.json({ error: "Payment not found" }, { status: 404 });
   }
 }
