@@ -4,59 +4,69 @@ import { users } from "@/db/schema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  const allUsers = await db.select().from(users);
-  return NextResponse.json(allUsers);
+  try {
+    const allUsers = await db.select().from(users);
+    return NextResponse.json(allUsers);
+  } catch (error) {
+    console.error("Failed to fetch users:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }
 
 export async function POST(request: NextRequest) {
-  const { fid, walletAddress, username, displayName, email } = await request.json();
-  
   try {
+    const body = await request.json();
+    const { fid, walletAddress, username, displayName, email } = body;
+
     const result = await db.insert(users).values({
       fid,
       walletAddress,
       username,
       displayName,
-      email
+      email,
     }).returning();
+
     return NextResponse.json(result[0], { status: 201 });
   } catch (error) {
+    console.error("Failed to create user:", error);
     return NextResponse.json({ error: "Failed to create user" }, { status: 500 });
   }
 }
 
 export async function PUT(request: NextRequest) {
-  const { id, fid, walletAddress, username, displayName, email } = await request.json();
-  
-  if (!id) {
-    return NextResponse.json({ error: "User ID required" }, { status: 400 });
-  }
-  
   try {
-    const result = await db.update(users).set({
-      fid,
-      walletAddress,
-      username,
-      displayName,
-      email
-    }).where(eq(users.id, id)).returning();
-    return NextResponse.json(result[0] || {});
+    const body = await request.json();
+    const { id, ...updates } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: "User ID required" }, { status: 400 });
+    }
+
+    const result = await db.update(users).set(updates).where(eq(users.id, id)).returning();
+    if (!result[0]) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(result[0]);
   } catch (error) {
+    console.error("Failed to update user:", error);
     return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
   }
 }
 
 export async function DELETE(request: NextRequest) {
-  const { id } = await request.json();
-  
-  if (!id) {
-    return NextResponse.json({ error: "User ID required" }, { status: 400 });
-  }
-  
   try {
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: "User ID required" }, { status: 400 });
+    }
+
     await db.delete(users).where(eq(users.id, id));
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Failed to delete user:", error);
     return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
   }
 }
