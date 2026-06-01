@@ -10,10 +10,11 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run src/db/migrate.ts",
-    "mpp:server": "bun run src/server/mpp-server.ts",
-    "solana:mint": "bun run src/server/mint-solana-nft.ts",
-    "solana:charge": "bun run src/server/create-solana-charge.ts",
-    "x402:serve": "bun run src/server/x402-resource-server.ts"
+    "solana:charge": "bun run src/server/solana-charge-server.ts",
+    "x402:serve": "bun run src/server/x402-resource-server.ts",
+    "hardhat:compile": "npx hardhat compile",
+    "hardhat:test": "npx hardhat test",
+    "hardhat:deploy": "npx hardhat run scripts/deploy.ts --network monadTestnet"
   },
   "dependencies": {
     "@farcaster/miniapp-core": "^0.3.6",
@@ -28,11 +29,7 @@
     "@privy-io/react-auth": "^1.70.0",
     "@solana/mpp": "^0.6.0",
     "@solana/web3.js": "^1.95.0",
-    "@x402/core": "^0.6.0",
-    "@x402/evm": "^0.6.0",
-    "@x402/svm": "^0.6.0",
-    "@x402/fetch": "^0.6.0",
-    "@x402/next": "^0.6.0",
+    "stripe": "^17.7.0",
     "@kilocode/app-builder-db": "github:Kilo-Org/app-builder-db#main",
     "drizzle-orm": "^0.45.2",
     "next": "^16.1.3",

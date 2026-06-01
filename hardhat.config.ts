@@ -7,21 +7,21 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
-      }
-    }
+        runs: 200,
+      },
+    },
   },
   networks: {
     hardhat: {},
     monadTestnet: {
       url: process.env.MONAD_RPC_URL || "https://testnet-rpc.monad.xyz",
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      chainId: 10143
-    }
+      chainId: 10143,
+    },
   },
   etherscan: {
     apiKey: {
-      monadTestnet: process.env.MONAD_EXPLORER_API_KEY || ""
+      monadTestnet: process.env.MONAD_EXPLORER_API_KEY || "",
     },
     customChains: [
       {
@@ -29,11 +29,11 @@ const config: HardhatUserConfig = {
         chainId: 10143,
         urls: {
           apiURL: "https://api-testnet.monadexplorer.com/api",
-          browserURL: "https://testnet.monadexplorer.com"
-        }
-      }
-    ]
-  }
+          browserURL: "https://testnet.monadexplorer.com",
+        },
+      },
+    ],
+  },
 };
 
 export default config;

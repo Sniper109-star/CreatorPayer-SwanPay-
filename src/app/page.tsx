@@ -7,6 +7,8 @@ export default function DashboardPage() {
     { title: "Send Tip", desc: "Support creators", href: "/tips", color: "bg-gradient-to-r from-[#d97706] to-[#f59e0b]" },
     { title: "Subscribe", desc: "Creator tiers", href: "/subscriptions", color: "bg-gradient-to-r from-[#fbbf24] to-[#fcd34d]" },
     { title: "Run Ads", desc: "Campaign setup", href: "/ads", color: "bg-gradient-to-r from-[#f59e0b] to-[#d97706]" },
+    { title: "Card Payment", desc: "Stripe checkout", href: "/payments/card", color: "bg-gradient-to-r from-[#f59e0b] to-[#fbbf24]" },
+    { title: "Jupiter Swap", desc: "Solana DEX", href: "/solana/swap", color: "bg-gradient-to-r from-[#d97706] to-[#f59e0b]" },
   ];
 
   return (
@@ -60,6 +62,17 @@ export default function DashboardPage() {
           <p className="text-[#fcd34d] text-sm mb-4">TikTok • Facebook • Twitter • Instagram</p>
           <Link href="/ads" className="inline-block bg-[#f59e0b] text-[#1a1107] px-6 py-2 rounded-full font-bold hover:bg-[#d97706] transition-colors">
             Start Campaign
+          </Link>
+        </section>
+
+        <section className="bg-[#291e0f] rounded-xl p-4 border border-[#422d13]">
+          <h2 className="text-lg font-semibold text-[#fef3c7] mb-3 flex items-center">
+            <span className="text-[#f59e0b] mr-2">✈️</span>
+            Tourist Bookings
+          </h2>
+          <p className="text-[#fcd34d] text-sm mb-3">Book tours, hotels, and experiences</p>
+          <Link href="/tours" className="inline-block bg-[#f59e0b] text-[#1a1107] px-4 py-2 rounded-lg text-sm font-bold">
+            Browse Tours
           </Link>
         </section>
       </main>
